@@ -10,7 +10,8 @@ If your dump contains more than one contest you may use the 'list' parameter
 to list all available contests within the dump. This scripts extracts codes
 from the contest that was marked as active when the dump was generated.
 
-#Usage:
+# Usage:
+
 ```
 bash boca-teamcodes.sh bocadb.DATE.tar.gz [contest-number|list]
   DATE: is generate time of BOCA Dump
