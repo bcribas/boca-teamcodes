@@ -87,22 +87,35 @@ if ! grep -q "^$ACTIVECONTEST\>" $USERTABLE; then
 fi
 
 declare -a mapuser
-while read USERNUMBER USERNAME TIPO; do
-  mapuser[$USERNUMBER]="$USERNAME"
-done <<< "$( grep "^$ACTIVECONTEST\>" $USERTABLE|awk -F'\t' '{print $3" "$4" "$7}'|grep 'team$')"
+while read SITE USERNUMBER USERNAME TIPO; do
+  mapuser[$SITE$USERNUMBER]="s$SITE-$USERNAME"
+done <<< "$( grep "^$ACTIVECONTEST\>" $USERTABLE|awk -F'\t' '{print $2" "$3" "$4" "$7}'|grep 'team$')"
 
 COPIADOS=0
 IGNORADOS=0
-while read USERNUMBER RUNNUMBER FILENAME OID; do
-  if [[ "x${mapuser[$USERNUMBER]}" == "x" ]]; then
+#while read USERNUMBER RUNNUMBER FILENAME OID; do
+while read USERNUMBER; do
+  read SITE
+  read RUNNUMBER
+  read FILENAME
+  read OID
+  read PROBLEMID
+  read ANSWER
+  RESULT=NO
+  if grep -q YES <<< "$ANSWER"; then
+    RESULT=YES
+  fi
+  if [[ "x${mapuser[$SITE$USERNUMBER]}" == "x" ]]; then
     #echo "Assuming user number $USERNUMBER is not a TEAM"
+    mkdir -p $OLDPWD/codigos/juizes
+    cp blob_$OID.dat "$OLDPWD/codigos/juizes/$PROBLEMID-$RESULT-$RUNNUMBER-$FILENAME"
     ((IGNORADOS++))
     continue
   fi
-  mkdir -p "$OLDPWD/codigos/${mapuser[$USERNUMBER]}"
-  cp blob_$OID.dat "$OLDPWD/codigos/${mapuser[$USERNUMBER]}/$RUNNUMBER-$FILENAME"
+  mkdir -p "$OLDPWD/codigos/${mapuser[$SITE$USERNUMBER]}"
+  cp blob_$OID.dat "$OLDPWD/codigos/${mapuser[$SITE$USERNUMBER]}/$PROBLEMID-$RESULT-$RUNNUMBER-$FILENAME"
   ((COPIADOS++))
-done <<< "$(grep "^$ACTIVECONTEST\>" $RUNTABLE |awk '{print $4" "$3" "$9" "$10}')"
+done <<< "$(grep "^$ACTIVECONTEST\>" $RUNTABLE |awk -F'\t' '{print $4"\n"$2"\n"$3"\n"$9"\n"$10"\n"$8"\n"$25}')"
 
 echo "Copied $COPIADOS team runs"
 echo "Ignored $IGNORADOS runs (judges submissions)"
