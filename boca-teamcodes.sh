@@ -42,7 +42,7 @@ if [[ ! -e restore.sql ]]; then
   exit 1
 fi
 
-CONTESTTABLE=$(grep -i "^COPY contesttable" restore.sql|grep '\.dat'|
+CONTESTTABLE=$(grep -i "^COPY.*contesttable" restore.sql|grep '\.dat'|
   awk -F"'" '{print $(NF-1)}'| cut -d'/' -f2)
 
 if [[ ! -e "$CONTESTTABLE" ]]; then
@@ -58,7 +58,7 @@ if [[ ! -e "$RUNTABLE" ]]; then
   exit 1
 fi
 
-USERTABLE=$(grep -i "^COPY usertable" restore.sql|grep '\.dat'|
+USERTABLE=$(grep -i "^COPY.*usertable" restore.sql|grep '\.dat'|
   awk -F"'" '{print $(NF-1)}'| cut -d'/' -f2)
 
 if [[ ! -e "$USERTABLE" ]]; then
