@@ -1,6 +1,6 @@
 #!/bin/bash
 # This script extracts team runs from BOCADB dump
-# Author: Bruno Ribas <brunoribas@utfpr.edu.br>
+# Author: Bruno Ribas <bruno.ribas@unb.br>
 #
 #This program is free software; you can redistribute it and/or
 #modify it under the terms of the GNU General Public License
