@@ -105,6 +105,7 @@ while read USERNUMBER; do
   if grep -q YES <<< "$ANSWER"; then
     RESULT=YES
   fi
+  RESULT=$(sed -e 's/.*Files match exactly.*/AC/g' -e 's/.*amount of white spaces.*/PE/' -e 's/.*Wrong answer.*/WA/g' -e 's/.*Compilation error.*/CE/' -e 's/.*untime error.*/RE/' -e 's/.*RUNTIME ERROR.*/RE/' -e 's/.*Time limit exceeded.*/TLE/g' -e 's/.*Contact staff.*/CS/' -e 's/.*Name mismatch.*/NM/' -e 's/.*Wrong language choice.*/WLC/' -e 's/.*Problem mismatch.*/PM/' -e 's/.*wrong name of class.*/NM/' <<< "$ANSWER")
   if [[ "x${mapuser[$SITE$USERNUMBER]}" == "x" ]]; then
     #echo "Assuming user number $USERNUMBER is not a TEAM"
     mkdir -p $OLDPWD/codigos/juizes
